@@ -28,7 +28,7 @@ pip_parse(
     # style env vars are read, but env vars that control requests and urllib3
     # can be passed
     # environment = {"HTTPS_PROXY": "http://my.proxy.fun/"},
-    name = "pypi",
+    name = "pypi1",
     # (Optional) You can provide extra parameters to pip.
     # Here, make pip output verbose (this is usable with `quiet = False`).
     # extra_pip_args = ["-v"],
@@ -48,18 +48,17 @@ pip_parse(
 
     # (Optional) You can set quiet to False if you want to see pip output.
     #quiet = False,
-    requirements_lock = "//:requirements-lock.txt",
+    requirements_lock = "//app1:requirements-lock.txt",
     enable_implicit_namespace_pkgs = True,
 )
-
-load("@pypi//:requirements.bzl", "install_deps")
+load("@pypi1//:requirements.bzl", pypi1_install_deps="install_deps")
 # Initialize repositories for all packages in requirements_lock.txt.
-install_deps()
+pypi1_install_deps()
 
 pip_parse(
     name= 'pypi2',
     # python_interpreter_target = interpreter,
-    requirements_lock = "//:requirements-lock-2.txt"
+    requirements_lock = "//app2:requirements-lock.txt"
 )
 load("@pypi2//:requirements.bzl", pypi2_install_deps = "install_deps")
 pypi2_install_deps()
