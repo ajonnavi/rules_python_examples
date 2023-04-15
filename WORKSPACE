@@ -10,8 +10,7 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/releases/download/0.20.0/rules_python-0.20.0.tar.gz",
     )
 
-load("@rules_python//python:repositories.bzl", "python_register_toolchains")
-load("@rules_python//python:repositories.bzl", "py_repositories")
+load("@rules_python//python:repositories.bzl", "python_register_toolchains", "py_repositories")
 
 py_repositories()
 
@@ -50,10 +49,10 @@ pip_parse(
     # (Optional) You can set quiet to False if you want to see pip output.
     #quiet = False,
     requirements_lock = "//:requirements-lock.txt",
+    enable_implicit_namespace_pkgs = True,
 )
 
 load("@pypi//:requirements.bzl", "install_deps")
-
 # Initialize repositories for all packages in requirements_lock.txt.
 install_deps()
 
@@ -62,7 +61,13 @@ pip_parse(
     # python_interpreter_target = interpreter,
     requirements_lock = "//:requirements-lock-2.txt"
 )
-
 load("@pypi2//:requirements.bzl", pypi2_install_deps = "install_deps")
-
 pypi2_install_deps()
+
+pip_parse(
+    name= 'lib',
+    # python_interpreter_target = interpreter,
+    requirements_lock = "//lib:requirements-lock.txt"
+)
+load("@lib//:requirements.bzl", lib_install_deps = "install_deps")
+lib_install_deps()

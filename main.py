@@ -14,15 +14,14 @@
 
 import requests
 
+from lib import hello_world, requests_version, pyyaml_version
 
-def version():
+
+def binary_version():
     return requests.__version__
 
 
-def hello_world():
-    print("Hello World!")
-
-
 hello_world()
-print(version())
-
+print(binary_version())
+print(requests_version())
+print(pyyaml_version())
